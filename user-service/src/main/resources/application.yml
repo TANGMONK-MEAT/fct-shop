@@ -1,0 +1,14 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
+
+
+
+server:
+  port: 8806
+spring:
+  application:
+    name: user-service
+  profiles:
+    include: common,mbg

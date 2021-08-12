@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.tangmonkmeat.mapper.IndexMapper">
+
+    <resultMap id="ChannelBaseResultMap" type="io.github.tangmonkmeat.model.Channel">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+        <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    </resultMap>
+
+    <resultMap id="AdBaseResultMap" type="io.github.tangmonkmeat.model.Ad">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+        <result column="link" jdbcType="VARCHAR" property="link" />
+        <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+        <result column="enable" jdbcType="BIT" property="enable" />
+        <result column="create" jdbcType="TIMESTAMP" property="create" />
+    </resultMap>
+
+    <select id="findChannel" resultMap="ChannelBaseResultMap" parameterType="int">
+        SELECT id,`name`,url,icon_url FROM channel ORDER BY sort_order ASC LIMIT 0,#{count};
+    </select>
+    <select id="findAd" resultMap="AdBaseResultMap" parameterType="int">
+        SELECT id,`name`,image_url,link FROM  ad WHERE `enable`=1 ORDER BY sort_order LIMIT 0,#{count};
+    </select>
+</mapper>

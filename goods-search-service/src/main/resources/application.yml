@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: goods-search-service
+  profiles:
+    include: common,mbg
+
+  elasticsearch:
+    rest:
+      uris: http://127.0.0.1:9200
+      username:
+      password:
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    # 指定是否从注册中心获取服务(注册中心不需要开启)
+    fetch-registry: true
+    # 指定是否将服务注册到注册中心(注册中心不需要开启)
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
+
+server:
+  port: 8803
+  servlet:
+    context-path: /ems

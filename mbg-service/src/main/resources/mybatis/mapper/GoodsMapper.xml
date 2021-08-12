@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.tangmonkmeat.mapper.GoodsMapper">
+    <resultMap id="BaseResultMap" type="io.github.tangmonkmeat.model.Goods">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+        <result column="seller_id" jdbcType="VARCHAR" property="sellerId"/>
+        <result column="buyer_id" jdbcType="VARCHAR" property="buyerId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="market_price" jdbcType="DECIMAL" property="marketPrice"/>
+        <result column="postage" jdbcType="DECIMAL" property="postage"/>
+        <result column="primary_pic_url" jdbcType="VARCHAR" property="primaryPicUrl"/>
+        <result column="region_id" jdbcType="INTEGER" property="regionId"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+        <result column="want_count" jdbcType="INTEGER" property="wantCount"/>
+        <result column="browse_count" jdbcType="INTEGER" property="browseCount"/>
+        <result column="is_selling" jdbcType="BIT" property="isSelling"/>
+        <result column="is_delete" jdbcType="BIT" property="isDelete"/>
+        <result column="able_express" jdbcType="BIT" property="ableExpress"/>
+        <result column="able_meet" jdbcType="BIT" property="ableMeet"/>
+        <result column="able_self_take" jdbcType="BIT" property="ableSelfTake"/>
+        <result column="post_time" jdbcType="TIMESTAMP" property="postTime"/>
+        <result column="last_edit" jdbcType="TIMESTAMP" property="lastEdit"/>
+        <result column="sold_time" jdbcType="TIMESTAMP" property="soldTime"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="io.github.tangmonkmeat.model.Goods">
+        <result column="desc" jdbcType="LONGVARCHAR" property="desc"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, category_id, seller_id, buyer_id, `name`, price, market_price, postage, primary_pic_url,
+    region_id, region, want_count, browse_count, is_selling, is_delete, able_express, 
+    able_meet, able_self_take, post_time, last_edit, sold_time
+  </sql>
+    <sql id="Blob_Column_List">
+    `desc`
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from goods
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update goods set is_selling=0 where id = #{id,jdbcType=INTEGER}
+  </update>
+    <insert id="insert" parameterType="io.github.tangmonkmeat.model.Goods">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into goods (category_id, seller_id, buyer_id,
+        name, price, market_price,
+        postage, primary_pic_url, region_id,
+        region, want_count, browse_count,
+        is_selling, is_delete, able_express,
+        able_meet, able_self_take, post_time,
+        last_edit, sold_time, `desc`
+        )
+        values (#{categoryId,jdbcType=INTEGER}, #{sellerId,jdbcType=VARCHAR}, #{buyerId,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{marketPrice,jdbcType=DECIMAL},
+        #{postage,jdbcType=DECIMAL}, #{primaryPicUrl,jdbcType=VARCHAR}, #{regionId,jdbcType=INTEGER},
+        #{region,jdbcType=VARCHAR}, #{wantCount,jdbcType=INTEGER}, #{browseCount,jdbcType=INTEGER},
+        #{isSelling,jdbcType=BIT}, #{isDelete,jdbcType=BIT}, #{ableExpress,jdbcType=BIT},
+        #{ableMeet,jdbcType=BIT}, #{ableSelfTake,jdbcType=BIT}, #{postTime,jdbcType=TIMESTAMP},
+        #{lastEdit,jdbcType=TIMESTAMP}, #{soldTime,jdbcType=TIMESTAMP}, #{desc,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="io.github.tangmonkmeat.model.Goods">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="sellerId != null">
+                seller_id,
+            </if>
+            <if test="buyerId != null">
+                buyer_id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="marketPrice != null">
+                market_price,
+            </if>
+            <if test="postage != null">
+                postage,
+            </if>
+            <if test="primaryPicUrl != null">
+                primary_pic_url,
+            </if>
+            <if test="regionId != null">
+                region_id,
+            </if>
+            <if test="region != null">
+                region,
+            </if>
+            <if test="wantCount != null">
+                want_count,
+            </if>
+            <if test="browseCount != null">
+                browse_count,
+            </if>
+            <if test="isSelling != null">
+                is_selling,
+            </if>
+            <if test="isDelete != null">
+                is_delete,
+            </if>
+            <if test="ableExpress != null">
+                able_express,
+            </if>
+            <if test="ableMeet != null">
+                able_meet,
+            </if>
+            <if test="ableSelfTake != null">
+                able_self_take,
+            </if>
+            <if test="postTime != null">
+                post_time,
+            </if>
+            <if test="lastEdit != null">
+                last_edit,
+            </if>
+            <if test="soldTime != null">
+                sold_time,
+            </if>
+            <if test="desc != null">
+                `desc`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="sellerId != null">
+                #{sellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerId != null">
+                #{buyerId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="marketPrice != null">
+                #{marketPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="postage != null">
+                #{postage,jdbcType=DECIMAL},
+            </if>
+            <if test="primaryPicUrl != null">
+                #{primaryPicUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="regionId != null">
+                #{regionId,jdbcType=INTEGER},
+            </if>
+            <if test="region != null">
+                #{region,jdbcType=VARCHAR},
+            </if>
+            <if test="wantCount != null">
+                #{wantCount,jdbcType=INTEGER},
+            </if>
+            <if test="browseCount != null">
+                #{browseCount,jdbcType=INTEGER},
+            </if>
+            <if test="isSelling != null">
+                #{isSelling,jdbcType=BIT},
+            </if>
+            <if test="isDelete != null">
+                #{isDelete,jdbcType=BIT},
+            </if>
+            <if test="ableExpress != null">
+                #{ableExpress,jdbcType=BIT},
+            </if>
+            <if test="ableMeet != null">
+                #{ableMeet,jdbcType=BIT},
+            </if>
+            <if test="ableSelfTake != null">
+                #{ableSelfTake,jdbcType=BIT},
+            </if>
+            <if test="postTime != null">
+                #{postTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastEdit != null">
+                #{lastEdit,jdbcType=TIMESTAMP},
+            </if>
+            <if test="soldTime != null">
+                #{soldTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="desc != null">
+                #{desc,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="selectGoodsIds" resultType="java.lang.Integer">
+      select id from goods where is_delete=0 and is_selling=1;
+    </select>
+    <select id="validateSeller" resultType="java.lang.Boolean">
+    select exists (select 1 from goods where seller_id=#{sellerId,jdbcType=INTEGER} and id=#{goodsId,jdbcType=INTEGER})
+  </select>
+    <select id="selectSimpleGoods" resultMap="BaseResultMap">
+        SELECT id,`name`,primary_pic_url,price FROM goods
+        WHERE is_delete=0 AND is_selling=1
+        ORDER BY post_time,browse_count DESC
+    </select>
+
+    <select id="selectGoodsByCateId" resultMap="BaseResultMap">
+        select id, `name`, primary_pic_url, price from goods
+        where category_id = #{cateId} and is_selling = 1 and is_delete = 0
+        order by post_time desc
+    </select>
+
+    <select id="selectSellerHistory" resultType="java.lang.Integer">
+        select COUNT(id) from goods where seller_id = #{sellerId} and is_selling=1 and is_delete=0
+    </select>
+    <select id="selectGalleryByGoodsId" resultType="io.github.tangmonkmeat.model.GoodsGallery">
+        select id, img_url from goods_gallery where goods_id=#{goodsId}
+    </select>
+    <select id="selectBaseCommentById" resultType="io.github.tangmonkmeat.model.GoodsComment">
+        select id, user_id, content, create_time
+        from goods_comment
+        where reply_comment_id = 0 and is_delete = 0 and goods_id = #{goodsId}
+        order by create_time desc
+    </select>
+    <select id="selectReplyComment" resultType="io.github.tangmonkmeat.model.GoodsComment">
+        select id, user_id, reply_user_id, content, create_time
+        from goods_comment
+        where reply_comment_id = #{replyId} and is_delete = 0
+        order by create_time desc
+    </select>
+    <select id="selectSimpleGoodsInSameCate" resultMap="BaseResultMap">
+        select id, `name`, primary_pic_url, price from goods
+        where category_id = (select category_id from goods where id = #{goodsId})
+        and id != #{goodsId}
+        and is_selling = 1
+        and is_delete = 0
+        order by post_time desc
+    </select>
+    <select id="selectSimpleGoodsInSameParentCate" resultMap="BaseResultMap">
+        select id, `name`, primary_pic_url, price
+        from goods
+        where category_id in
+        (select bar.id from goods
+            inner join category as foo on foo.id = goods.category_id
+            inner join category as bar on foo.parent_id = bar.parent_id
+            where goods.id = #{goodsId})
+        and id != #{goodsId}
+        and is_delete = 0
+        and is_selling = 1
+        order by post_time desc
+    </select>
+    <select id="selectSimpleGoodsById" resultMap="BaseResultMap">
+        select id, `name`, primary_pic_url, price
+        from goods
+        where is_delete = 0 and id = #{goodsId}
+    </select>
+    <select id="selectSimpleGoodsList" parameterType="java.util.ArrayList" resultMap="BaseResultMap">
+        select id, name, primary_pic_url, price, is_selling
+        from goods
+        where is_delete = 0 and id in
+        <foreach collection="goodsIdList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <update id="updateByPrimaryKeySelective" parameterType="io.github.tangmonkmeat.model.Goods">
+        update goods
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="sellerId != null">
+                seller_id = #{sellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerId != null">
+                buyer_id = #{buyerId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="marketPrice != null">
+                market_price = #{marketPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="postage != null">
+                postage = #{postage,jdbcType=DECIMAL},
+            </if>
+            <if test="primaryPicUrl != null">
+                primary_pic_url = #{primaryPicUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="regionId != null">
+                region_id = #{regionId,jdbcType=INTEGER},
+            </if>
+            <if test="region != null">
+                region = #{region,jdbcType=VARCHAR},
+            </if>
+            <if test="wantCount != null">
+                want_count = #{wantCount,jdbcType=INTEGER},
+            </if>
+            <if test="browseCount != null">
+                browse_count = #{browseCount,jdbcType=INTEGER},
+            </if>
+            <if test="isSelling != null">
+                is_selling = #{isSelling,jdbcType=BIT},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete,jdbcType=BIT},
+            </if>
+            <if test="ableExpress != null">
+                able_express = #{ableExpress,jdbcType=BIT},
+            </if>
+            <if test="ableMeet != null">
+                able_meet = #{ableMeet,jdbcType=BIT},
+            </if>
+            <if test="ableSelfTake != null">
+                able_self_take = #{ableSelfTake,jdbcType=BIT},
+            </if>
+            <if test="postTime != null">
+                post_time = #{postTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastEdit != null">
+                last_edit = #{lastEdit,jdbcType=TIMESTAMP},
+            </if>
+            <if test="soldTime != null">
+                sold_time = #{soldTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="desc != null">
+                `desc` = #{desc,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="io.github.tangmonkmeat.model.Goods">
+    update goods
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      buyer_id = #{buyerId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      postage = #{postage,jdbcType=DECIMAL},
+      primary_pic_url = #{primaryPicUrl,jdbcType=VARCHAR},
+      region_id = #{regionId,jdbcType=INTEGER},
+      region = #{region,jdbcType=VARCHAR},
+      want_count = #{wantCount,jdbcType=INTEGER},
+      browse_count = #{browseCount,jdbcType=INTEGER},
+      is_selling = #{isSelling,jdbcType=BIT},
+      is_delete = #{isDelete,jdbcType=BIT},
+      able_express = #{ableExpress,jdbcType=BIT},
+      able_meet = #{ableMeet,jdbcType=BIT},
+      able_self_take = #{ableSelfTake,jdbcType=BIT},
+      post_time = #{postTime,jdbcType=TIMESTAMP},
+      last_edit = #{lastEdit,jdbcType=TIMESTAMP},
+      sold_time = #{soldTime,jdbcType=TIMESTAMP},
+      `desc` = #{desc,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="io.github.tangmonkmeat.model.Goods">
+    update goods
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      buyer_id = #{buyerId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      postage = #{postage,jdbcType=DECIMAL},
+      primary_pic_url = #{primaryPicUrl,jdbcType=VARCHAR},
+      region_id = #{regionId,jdbcType=INTEGER},
+      region = #{region,jdbcType=VARCHAR},
+      want_count = #{wantCount,jdbcType=INTEGER},
+      browse_count = #{browseCount,jdbcType=INTEGER},
+      is_selling = #{isSelling,jdbcType=BIT},
+      is_delete = #{isDelete,jdbcType=BIT},
+      able_express = #{ableExpress,jdbcType=BIT},
+      able_meet = #{ableMeet,jdbcType=BIT},
+      able_self_take = #{ableSelfTake,jdbcType=BIT},
+      post_time = #{postTime,jdbcType=TIMESTAMP},
+      last_edit = #{lastEdit,jdbcType=TIMESTAMP},
+      sold_time = #{soldTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateGoodsBrowseCount">
+    update goods set browse_count = browse_count + #{browseCount,jdbcType=INTEGER} where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

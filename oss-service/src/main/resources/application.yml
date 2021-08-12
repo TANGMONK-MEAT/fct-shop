@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: oss-service
+# OSS相关配置信息
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com # oss对外服务的访问域名
+    accessKeyId: LTAI5tSfHwePgdJzYLHYMg98 # 访问身份验证中用到用户标识
+    accessKeySecret: p2iRaFAyPakfeXLvwHqzMTu4XacDhW # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucketName: fct-shop # oss的存储空间
+    policy:
+      expire: 600 # 签名有效期(S)
+    maxSize: 10 # 上传文件大小(M)
+    callback: http://47.110.67.7:8081/aliyun/oss/callback # 文件上传成功后的回调地址
+    dir:
+      prefix: mall/images/ # 上传文件夹路径前缀
+server:
+  port: 8807
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    # 指定是否从注册中心获取服务(注册中心不需要开启)
+    fetch-registry: true
+    # 指定是否将服务注册到注册中心(注册中心不需要开启)
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8081/eureka/

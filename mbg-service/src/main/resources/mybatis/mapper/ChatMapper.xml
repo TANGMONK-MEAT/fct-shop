@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.tangmonkmeat.mapper.ChatMapper">
+  <resultMap id="BaseResultMap" type="io.github.tangmonkmeat.model.Chat">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="u1" jdbcType="VARCHAR" property="u1" />
+    <result column="u2" jdbcType="VARCHAR" property="u2" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="show_to_u1" jdbcType="BIT" property="showToU1" />
+    <result column="show_to_u2" jdbcType="BIT" property="showToU2" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, u1, u2, goods_id, show_to_u1, show_to_u2
+  </sql>
+  <select id="selectByExample" parameterType="io.github.tangmonkmeat.model.ChatExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from chat
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from chat
+    where id = #{id} and is_deleted=false
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from chat
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="io.github.tangmonkmeat.model.ChatExample">
+    delete from chat
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="io.github.tangmonkmeat.model.Chat">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into chat (u1, u2, goods_id, 
+      show_to_u1, show_to_u2)
+    values (#{u1,jdbcType=VARCHAR}, #{u2,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, 
+      #{showToU1,jdbcType=BIT}, #{showToU2,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="io.github.tangmonkmeat.model.Chat">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into chat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="u1 != null">
+        u1,
+      </if>
+      <if test="u2 != null">
+        u2,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="showToU1 != null">
+        show_to_u1,
+      </if>
+      <if test="showToU2 != null">
+        show_to_u2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="u1 != null">
+        #{u1,jdbcType=VARCHAR},
+      </if>
+      <if test="u2 != null">
+        #{u2,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="showToU1 != null">
+        #{showToU1,jdbcType=BIT},
+      </if>
+      <if test="showToU2 != null">
+        #{showToU2,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="io.github.tangmonkmeat.model.ChatExample" resultType="java.lang.Long">
+    select count(*) from chat
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    <select id="getChatIdByUser" resultType="java.lang.Integer">
+      select id from chat where (u1 = #{openId} and show_to_u1 = true) or (u2 = #{openId} and show_to_u2 = true) and is_deleted=false
+    </select>
+    <select id="getChatIdByChat" resultType="java.lang.Integer">
+      select id from chat where u1 = #{chat.u1} and u2 = #{chat.u2} and goods_id = #{chat.goodsId} and is_deleted=false
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+    update chat
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.u1 != null">
+        u1 = #{record.u1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.u2 != null">
+        u2 = #{record.u2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsId != null">
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.showToU1 != null">
+        show_to_u1 = #{record.showToU1,jdbcType=BIT},
+      </if>
+      <if test="record.showToU2 != null">
+        show_to_u2 = #{record.showToU2,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update chat
+    set id = #{record.id,jdbcType=INTEGER},
+      u1 = #{record.u1,jdbcType=VARCHAR},
+      u2 = #{record.u2,jdbcType=VARCHAR},
+      goods_id = #{record.goodsId,jdbcType=INTEGER},
+      show_to_u1 = #{record.showToU1,jdbcType=BIT},
+      show_to_u2 = #{record.showToU2,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="io.github.tangmonkmeat.model.Chat">
+    update chat
+    <set>
+      <if test="u1 != null">
+        u1 = #{u1,jdbcType=VARCHAR},
+      </if>
+      <if test="u2 != null">
+        u2 = #{u2,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="showToU1 != null">
+        show_to_u1 = #{showToU1,jdbcType=BIT},
+      </if>
+      <if test="showToU2 != null">
+        show_to_u2 = #{showToU2,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="io.github.tangmonkmeat.model.Chat">
+    update chat
+    set u1 = #{u1,jdbcType=VARCHAR},
+      u2 = #{u2,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      show_to_u1 = #{showToU1,jdbcType=BIT},
+      show_to_u2 = #{showToU2,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateShowToBoth">
+    update chat set show_to_u1=1,show_to_u2=1 where id=#{chatId,jdbcType=INTEGER}
+  </update>
+  <update id="updateChatStatus">
+    update chat
+    set is_deleted=#{isDeleted} where id=#{chatId}
+  </update>
+</mapper>

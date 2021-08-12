@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <!--指定 MyBatis 所用日志的具体实现，未指定时将自动查找-->
+        <setting name="logImpl" value="SLF4J"/>
+        <!--开启延迟加载，所有关联对象都会延迟加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--开启驼峰命名映射，即从经典数据库列名 A_COLUMN 映射到经典 Java 属性名 aColumn-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--关闭缓存-->
+        <setting name="cacheEnabled" value="false"/>
+    </settings>
+
+</configuration>

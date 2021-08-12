@@ -1,0 +1,4 @@
+spring:
+  profiles:
+    # 命令行参数 or dev
+    active: ${SPRING-PROFILE-ACTIVE:dev}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.tangmonkmeat.mapper.EsProductMapper">
+
+    <resultMap id="BaseResultMap" type="io.github.tangmonkmeat.model.EsProduct">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+        <result column="seller_id" jdbcType="VARCHAR" property="sellerId"/>
+        <result column="buyer_id" jdbcType="VARCHAR" property="buyerId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="market_price" jdbcType="DECIMAL" property="marketPrice"/>
+        <result column="postage" jdbcType="DECIMAL" property="postage"/>
+        <result column="primary_pic_url" jdbcType="VARCHAR" property="primaryPicUrl"/>
+        <result column="region_id" jdbcType="INTEGER" property="regionId"/>
+        <result column="region" jdbcType="VARCHAR" property="region"/>
+        <result column="want_count" jdbcType="INTEGER" property="wantCount"/>
+        <result column="browse_count" jdbcType="INTEGER" property="browseCount"/>
+        <result column="is_selling" jdbcType="BIT" property="isSelling"/>
+        <result column="is_delete" jdbcType="BIT" property="isDelete"/>
+        <result column="able_express" jdbcType="BIT" property="ableExpress"/>
+        <result column="able_meet" jdbcType="BIT" property="ableMeet"/>
+        <result column="able_self_take" jdbcType="BIT" property="ableSelfTake"/>
+        <result column="post_time" jdbcType="TIMESTAMP" property="postTime"/>
+        <result column="last_edit" jdbcType="TIMESTAMP" property="lastEdit"/>
+        <result column="sold_time" jdbcType="TIMESTAMP" property="soldTime"/>
+    </resultMap>
+
+
+    <select id="getAllEsProductList" resultType="io.github.tangmonkmeat.model.EsProduct">
+        select * from goods where is_delete=0 and is_selling=1
+        <if test="start != null and size != null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="getEsProductByPrimaryId" resultMap="BaseResultMap">
+        select * from goods where id=#{id} and is_delete=0 and is_selling=1
+    </select>
+</mapper>

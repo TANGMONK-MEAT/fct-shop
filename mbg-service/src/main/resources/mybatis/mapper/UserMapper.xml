@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.tangmonkmeat.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="io.github.tangmonkmeat.model.User">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
+        <result column="gender" jdbcType="INTEGER" property="gender"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+        <result column="register_time" jdbcType="TIMESTAMP" property="registerTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+    </resultMap>
+
+    <resultMap id="BaseSimpleResultMap" type="io.github.tangmonkmeat.dto.SimpleUser">
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
+        <result column="register_time" jdbcType="TIMESTAMP" property="registerTime"/>
+    </resultMap>
+
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, open_id, nick_name, avatar_url, gender, country, province, city, `language`, register_time, status
+  </sql>
+    <select id="selectByExample" parameterType="io.github.tangmonkmeat.model.UserExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from `user`
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `user`
+        where open_id = #{openId,jdbcType=VARCHAR}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="io.github.tangmonkmeat.model.UserExample">
+        delete from user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <delete id="deleteUserCollect">
+    delete from from user_preference where goods_id = #{goodsId} and user_id = #{userId} and `type`=1
+  </delete>
+    <insert id="insert" parameterType="io.github.tangmonkmeat.model.User">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into user (open_id, nick_name, avatar_url,
+        gender, country, province,
+        city, language, register_time
+        )
+        values (#{openId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR},
+        #{gender,jdbcType=INTEGER}, #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
+        #{city,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="io.github.tangmonkmeat.model.User">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="nickName != null">
+                nick_name,
+            </if>
+            <if test="avatarUrl != null">
+                avatar_url,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="language != null">
+                language,
+            </if>
+            <if test="registerTime != null">
+                register_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="avatarUrl != null">
+                #{avatarUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=INTEGER},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="language != null">
+                #{language,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null">
+                #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="io.github.tangmonkmeat.model.UserExample" resultType="java.lang.Long">
+        select count(*) from user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <select id="selectByOpenIdList" parameterType="java.lang.String" resultMap="BaseSimpleResultMap">
+        select open_id, nick_name, avatar_url, register_time
+        from `user`
+        where open_id in
+        <foreach collection="openIdList" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectAllOpenIds" resultType="java.lang.String">
+
+      select open_id from user where status=1
+
+    </select>
+
+    <select id="userHasCollect" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT 1 FROM user_preference WHERE type = 1 and user_id = #{userId} and goods_id = #{goodsId})
+    </select>
+
+    <select id="getUserCollect" resultType="io.github.tangmonkmeat.model.Goods">
+        SELECT
+            goods.id,
+            `name`,
+            primary_pic_url,
+            price,
+            is_selling
+        FROM
+            goods
+            INNER JOIN user_preference AS u ON goods.id = u.goods_id
+            AND u.user_id = #{openId} and u.type = 1 and is_delete = 0
+        ORDER BY
+            u.create_time DESC
+    </select>
+
+    <select id="getUserBought" resultType="io.github.tangmonkmeat.model.Goods">
+        select id, `name`, primary_pic_url, price, sold_time
+        from goods
+        where buyer_id = #{openId}
+        and is_selling = 0
+        order by sold_time desc
+    </select>
+
+    <select id="getUserSold" resultType="io.github.tangmonkmeat.model.Goods">
+        select id, `name`, primary_pic_url, price, sold_time
+        from goods
+        where seller_id = #{openId}
+        and is_selling = 0
+        order by sold_time desc
+    </select>
+    <select id="getUserPosted" resultType="io.github.tangmonkmeat.model.Goods">
+        select id, name, primary_pic_url, price, last_edit
+        from goods
+        where seller_id = #{openId}
+        and is_selling = 1
+        and is_delete = 0
+        order by last_edit desc
+    </select>
+    <select id="getUserHistoryList" resultType="io.github.tangmonkmeat.model.GoodsExample">
+        select goods.id,`name`,primary_pic_url,price,is_selling,post_time,sold_time,`time`
+        from goods inner join
+        (select id, post_time as `time` from goods
+        UNION select id, sold_time as `time` from goods where sold_time is not null) as ids
+        on goods.id = ids.id and seller_id = #{openId} order by post_time desc
+    </select>
+    <select id="userHasWant" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT 1 FROM user_preference WHERE type = 2 and user_id = #{sellerId} and goods_id = #{goodsId})
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update user
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.openId != null">
+                open_id = #{record.openId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.nickName != null">
+                nick_name = #{record.nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.avatarUrl != null">
+                avatar_url = #{record.avatarUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.gender != null">
+                gender = #{record.gender,jdbcType=INTEGER},
+            </if>
+            <if test="record.country != null">
+                country = #{record.country,jdbcType=VARCHAR},
+            </if>
+            <if test="record.province != null">
+                province = #{record.province,jdbcType=VARCHAR},
+            </if>
+            <if test="record.city != null">
+                city = #{record.city,jdbcType=VARCHAR},
+            </if>
+            <if test="record.language != null">
+                language = #{record.language,jdbcType=VARCHAR},
+            </if>
+            <if test="record.registerTime != null">
+                register_time = #{record.registerTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update user
+        set id = #{record.id,jdbcType=INTEGER},
+        open_id = #{record.openId,jdbcType=VARCHAR},
+        nick_name = #{record.nickName,jdbcType=VARCHAR},
+        avatar_url = #{record.avatarUrl,jdbcType=VARCHAR},
+        gender = #{record.gender,jdbcType=INTEGER},
+        country = #{record.country,jdbcType=VARCHAR},
+        province = #{record.province,jdbcType=VARCHAR},
+        city = #{record.city,jdbcType=VARCHAR},
+        language = #{record.language,jdbcType=VARCHAR},
+        register_time = #{record.registerTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="io.github.tangmonkmeat.model.User">
+        update user
+        <set>
+            <if test="openId != null">
+                open_id = #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="avatarUrl != null">
+                avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=INTEGER},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="language != null">
+                language = #{language,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null">
+                register_time = #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="io.github.tangmonkmeat.model.User">
+    update user
+    set open_id = #{openId,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      country = #{country,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      language = #{language,jdbcType=VARCHAR},
+      register_time = #{registerTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="setUserWant">
+        insert into user_preference (goods_id, user_id, type)
+        values (#{goodsId}, #{sellerId}, 2)
+    </update>
+    <insert id="setUserCollect">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO user_preference ( goods_id, user_id, `type` ) SELECT
+        #{goodsId},
+        #{userId},
+        1 AS temp
+        WHERE
+        NOT EXISTS ( SELECT 1 FROM user_preference WHERE goods_id = #{goodsId} AND user_id = #{userId} AND `type` = 1 )
+    </insert>
+</mapper>

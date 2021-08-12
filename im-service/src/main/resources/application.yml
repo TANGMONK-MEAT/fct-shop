@@ -1,0 +1,12 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
+
+spring:
+  application:
+    name: im-service
+  profiles:
+    include: common,mbg
+server:
+  port: 8088

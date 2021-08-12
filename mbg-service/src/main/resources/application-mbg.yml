@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_fct_shop?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 2950371251@qq.com
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    platform: mysql
+  jackson:
+    time-zone: GMT+8
+
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath*:mybatis/mapper/*.xml,classpath*:mybatis/search_mapper/*.xml,classpath*:mybatis/goods_mapper/*.xml
