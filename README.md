@@ -24,6 +24,8 @@
 2. mbg模块配置mysql
 3. oss模块配置阿里云OSS对象存储的配置
 
-# 项目架构图
+# 后端服务拆分
+
+[![fgSpTA.png](https://z3.ax1x.com/2021/08/15/fgSpTA.png)](https://imgtu.com/i/fgSpTA)
 
 
