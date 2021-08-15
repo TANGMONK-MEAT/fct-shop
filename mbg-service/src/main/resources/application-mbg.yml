@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/db_fct_shop?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    username: root
-    password: 2950371251@qq.com
+    username: 
+    password: 
     driver-class-name: com.mysql.cj.jdbc.Driver
     platform: mysql
   jackson:
