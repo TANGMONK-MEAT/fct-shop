@@ -6,8 +6,8 @@ spring:
   rabbitmq:
     host: 127.0.0.1
     port: 5672
-    username: zwl
-    password: zwl
+    username: 
+    password: 
     virtual-host: /fct-shop
     listener:
       direct:
