@@ -5,7 +5,9 @@
 # 技术点
 
 前端：微信小程序的Mini框架
+
 后台：Java8，SpringBoot，SpringCloud，Redis，MySQL，RabbitMQ
+
 其他：Maven，docker，阿里云OSS对象存储
 
 # 完成功能
